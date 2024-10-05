@@ -1,7 +1,5 @@
 from subprocess import check_output, run, CalledProcessError
 from re import findall
-from pandas import DataFrame
-from tabulate import tabulate
 
 # Read the sni.txt file and split it into a list of domain names
 with open("sni.txt", "r") as my_file:
@@ -33,8 +31,12 @@ domain_ping_dict = {sni_list[i]: float(avg_value_list[i]) for i in range(len(sni
 # Sort the dictionary by the values in ascending order
 sorted_dict = dict(sorted(domain_ping_dict.items(), key=lambda item: item[1]))
 
-# Convert the sorted dictionary to a pandas DataFrame and print it using tabulate
-df = DataFrame(sorted_dict.items(), columns=['domains', 'pings(ms)'])
-run('clear')
-print(tabulate(df, headers='keys', tablefmt='psql'))
+# Use a list to store the sorted data and print it manually
+output = []
+for domain, ping in sorted_dict.items():
+    output.append(f"Domain: {domain}, Ping: {ping} ms")
 
+run('clear')
+for line in output:
+    print(line)
+    
